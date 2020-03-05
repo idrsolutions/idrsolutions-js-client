@@ -20,7 +20,7 @@ IDRsolutions offer a free trial service for running BuildVu with JavaScript, mor
 # Usage #
 
 ```javascript
-var endpoint = "http://localhost:8080/ + IDRCLoudClient.BUILDVU";
+var endpoint = "http://localhost:8080/ + IDRCloudClient.BUILDVU";
 
 //Convert the attached file
 var file = document.getElementById('file-input').files[0];
@@ -29,9 +29,9 @@ var url = document.getElementById('url-input').value;
 
 //Upload is used when a file uploaded to the server
 //Download is used when the server downloads from the url
-var input = file ? IDRCLoudClient.UPLOAD : IDRCLoudClient.DOWNLOAD;
+var input = file ? IDRCloudClient.UPLOAD : IDRCloudClient.DOWNLOAD;
 
-IDRCLoudClient.convert({
+IDRCloudClient.convert({
     endpoint: endpoint,
     //Parameters are the API parameters that will be sent to the server
     //See https://github.com/idrsolutions/buildvu-microservice-example/blob/master/API.md
