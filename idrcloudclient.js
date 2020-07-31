@@ -17,7 +17,7 @@
 (function () {
     window.IDRCloudClient = (function () {
 
-        var progress, success, failure;
+        var progress, success, failure, username, password;
 
 
 
@@ -54,6 +54,10 @@
                         }
                     };
                     req.open("GET", endpoint + "?uuid=" + uuid , true);
+                    if (username && password) {
+                        req.withCredentials = true;
+                        req.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+                    }
                     req.send();
                 }
             }, 500);
@@ -115,6 +119,24 @@
                     };
 
                     xhr.open("POST", params.endpoint, true);
+
+                    if (params.username || params.password) {
+                        if (!params.username) {
+                            throw Error('Password provided but username is missing');
+                        } else {
+                            username = params.username;
+                        }
+
+                        if (!params.password) {
+                            throw Error('Username provided but password is missing');
+                        } else {
+                            password = params.password;
+                        }
+
+                        xhr.withCredentials = true;
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+                    }
+
                     var data = new FormData();
 
                     if (params.parameters) {
