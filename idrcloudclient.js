@@ -36,6 +36,11 @@
                                     if (success) {
                                         success(data);
                                     }
+                                } else if (data.state === "error") {
+                                    clearInterval(poll);
+                                    if (failure) {
+                                        failure("Error during conversion:\n" + req.responseText);
+                                    }
                                 } else {
                                     if (progress) {
                                         progress(data);
