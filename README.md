@@ -1,14 +1,36 @@
-# BuildVu JavaScript Client #
-Convert PDF to HTML5 or SVG with JavaScript, using the BuildVu JavaScript Client to interact with IDRsolutions' [BuildVu Javascript Client](https://github.com/idrsolutions/idrsolutions-js-client/blob/master/README-BUILDVU.md).
+# IDRSolutions NodeJS Client #
 
-# JPedal JavaScript Client #
-Convert PDF to Images with JavaScript, using the IDRSolutions Cloud JavaScript Client to interact with IDRsolutions' [JPedal Javascript Client](https://github.com/idrsolutions/idrsolutions-js-client/blob/master/README-JPEDAL.md).
+Interact with any [IDRsolutions' Microservice Examples](https://github.com/idrsolutions/) using the IDRSolutions NodeJS Client.
+
+The IDRsolutions Microservice Examples are open source projects that allows you to
+convert PDFs using various softwares from [IDRSolutions](https://www.idrsolutions.com/) as an online service.
+
+JPedal Microservice Example - Convert pages to images
+BuildVu Microservice Example - Convert PDFs to HTML or SVG
+
+IDR Solutions offer a free trial service for running these libraries with NodeJS. You can
+find information at the following links for [JPedal](https://www.idrsolutions.com/jpedal/) and [BuildVu](https://www.idrsolutions.com/buildvu/).
+
+-----
+
+# Installation #
+
+The project has an example html file that can be added to a webserver for use.
+
+-----
+
+# Usage #
+## BuildVu #
+Full usage for connecting to [BuildVu can be found here](https://docs.idrsolutions.com/buildvu/).
+
+## JPedal #
+Full usage for connecting to [JPedal can be found here](https://docs.idrsolutions.com/jpedal/).
 
 # Who do I talk to? #
 
 Found a bug, or have a suggestion / improvement? Let us know through the Issues page.
 
-Got questions? You can contact us [here](https://idrsolutions.zendesk.com/hc/en-us/requests/new).
+Got questions? You can contact us [here](https://idrsolutions.atlassian.net/servicedesk/customer/portal/8).
 
 -----
 
