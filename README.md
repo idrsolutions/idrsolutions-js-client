@@ -1,4 +1,4 @@
-# IDRSolutions NodeJS Client #
+# IDRSolutions Javascript Client #
 
 Interact with any [IDRsolutions' Microservice Examples](https://github.com/idrsolutions/) using the IDRSolutions NodeJS Client.
 
