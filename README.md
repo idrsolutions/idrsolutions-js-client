@@ -1,6 +1,6 @@
 # IDRSolutions Javascript Client #
 
-Interact with any [IDRsolutions' Microservice Examples](https://github.com/idrsolutions/) using the IDRSolutions NodeJS Client.
+Interact with any [IDRsolutions' Microservice Examples](https://github.com/idrsolutions/) using the IDRSolutions JavaScript Client.
 
 The IDRsolutions Microservice Examples are open source projects that allows you to
 convert PDFs using various softwares from [IDRSolutions](https://www.idrsolutions.com/) as an online service.
@@ -8,7 +8,7 @@ convert PDFs using various softwares from [IDRSolutions](https://www.idrsolution
 JPedal Microservice Example - Convert pages to images
 BuildVu Microservice Example - Convert PDFs to HTML or SVG
 
-IDR Solutions offer a free trial service for running these libraries with NodeJS. You can
+IDR Solutions offer a free trial service for running these libraries with JavaScript. You can
 find information at the following links for [JPedal](https://www.idrsolutions.com/jpedal/) and [BuildVu](https://www.idrsolutions.com/buildvu/).
 
 -----
@@ -21,10 +21,10 @@ The project has an example html file that can be added to a webserver for use.
 
 # Usage #
 ## BuildVu #
-Full usage for connecting to [BuildVu can be found here](https://docs.idrsolutions.com/buildvu/).
+Full usage for connecting to [BuildVu can be found here](https://support.idrsolutions.com/buildvu/tutorials/cloud/).
 
 ## JPedal #
-Full usage for connecting to [JPedal can be found here](https://docs.idrsolutions.com/jpedal/).
+Full usage for connecting to [JPedal can be found here](https://support.idrsolutions.com/jpedal/tutorials/cloud/).
 
 # Who do I talk to? #
 
