@@ -72,7 +72,8 @@
             UPLOAD: 'upload',
             DOWNLOAD: 'download',
             JPEDAL: 'jpedal',
-            BUILDVU: 'buildvu' ,
+            BUILDVU: 'buildvu',
+            FORMVU: 'formvu',
             convert: function (params) {
 
                 if (!params.endpoint) {
