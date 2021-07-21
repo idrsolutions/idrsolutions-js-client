@@ -19,8 +19,6 @@
 
         var progress, success, failure, username, password;
 
-
-
         var doPoll = function (uuid, endpoint) {
             var req, retries = 0;
 
@@ -59,8 +57,8 @@
                         }
                     };
                     req.open("GET", endpoint + "?uuid=" + uuid , true);
+                    req.withCredentials = true; // Auth may be provided by cookies when username/password are not explicitly provided
                     if (username && password) {
-                        req.withCredentials = true;
                         req.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
                     }
                     req.send();
@@ -126,6 +124,7 @@
 
                     xhr.open("POST", params.endpoint, true);
 
+                    xhr.withCredentials = true; // Auth may be provided by cookies when username/password are not explicitly provided
                     if (params.username || params.password) {
                         if (!params.username) {
                             throw Error('Password provided but username is missing');
@@ -139,7 +138,6 @@
                             password = params.password;
                         }
 
-                        xhr.withCredentials = true;
                         xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
                     }
 
