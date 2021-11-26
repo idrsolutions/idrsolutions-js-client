@@ -17,12 +17,20 @@
 (function () {
     window.IDRCloudClient = (function () {
 
-        var progress, success, failure, username, password;
+        var progress, success, failure, username, password, requestTimeout, conversionTimeout;
 
         var doPoll = function (uuid, endpoint) {
-            var req, retries = 0;
+            var req, retries = 0, time = 0;
 
             var poll = setInterval(function () {
+                time += 500;
+                if (conversionTimeout && time > conversionTimeout) {
+                    if (failure) {
+                        failure("Conversion timed out")
+                    }
+                    clearInterval(poll);
+                    return;
+                }
                 if (!req) {
                     req = new XMLHttpRequest();
                     req.onreadystatechange = function (e) {
