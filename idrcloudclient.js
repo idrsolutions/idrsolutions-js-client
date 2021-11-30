@@ -95,7 +95,13 @@
                     progress = params.progress;
                 }
 
+                requestTimeout = params.requestTimeout;
+                conversionTimeout = params.conversionTimeout;
+
                 var xhr = new XMLHttpRequest();
+                if (requestTimeout && requestTimeout > 0) {
+                    xhr.timeout = requestTimeout;
+                }
                 if (xhr.upload) {
                     xhr.upload.addEventListener("progress", function (e) {
                         if (progress) {
@@ -129,6 +135,12 @@
                             }
                         }
                     };
+
+                    xhr.ontimeout = function () {
+                        if (failure) {
+                            failure("Timed out while sending convert request");
+                        }
+                    }
 
                     xhr.open("POST", params.endpoint, true);
 
