@@ -17,12 +17,20 @@
 (function () {
     window.IDRCloudClient = (function () {
 
-        var progress, success, failure, username, password;
+        var progress, success, failure, username, password, requestTimeout, conversionTimeout;
 
         var doPoll = function (uuid, endpoint) {
-            var req, retries = 0;
+            var req, retries = 0, time = 0;
 
             var poll = setInterval(function () {
+                time += 500;
+                if (conversionTimeout && time > conversionTimeout) {
+                    if (failure) {
+                        failure("Conversion timed out")
+                    }
+                    clearInterval(poll);
+                    return;
+                }
                 if (!req) {
                     req = new XMLHttpRequest();
                     req.onreadystatechange = function (e) {
@@ -87,7 +95,13 @@
                     progress = params.progress;
                 }
 
+                requestTimeout = params.requestTimeout;
+                conversionTimeout = params.conversionTimeout;
+
                 var xhr = new XMLHttpRequest();
+                if (requestTimeout && requestTimeout > 0) {
+                    xhr.timeout = requestTimeout;
+                }
                 if (xhr.upload) {
                     xhr.upload.addEventListener("progress", function (e) {
                         if (progress) {
@@ -121,6 +135,12 @@
                             }
                         }
                     };
+
+                    xhr.ontimeout = function () {
+                        if (failure) {
+                            failure("Timed out while sending convert request");
+                        }
+                    }
 
                     xhr.open("POST", params.endpoint, true);
 
