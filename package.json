@@ -1,6 +1,6 @@
 {
   "name": "@idrsolutions/idrcloudclient",
-  "version": "4.4.1",
+  "version": "4.4.2",
   "description": "IDRSolutions Node.js Cloud Client is the Node.js API for IDRSolutions' Microservice Examples.",
   "main": "idrcloudclient.js",
   "repository": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/idrsolutions/idrsolutions-nodejs-client#readme",
   "dependencies": {
-    "form-data": "^4.0.0"
+    "form-data": "^4.0.4"
   },
   "engines": {
     "node": ">=13.0.0"
