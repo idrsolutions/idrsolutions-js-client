@@ -304,7 +304,7 @@ async function streamConversion() {
     });
     
     try {
-        // Option 1: Using fs.createReadStream (Node.js)
+        // Using fs.createReadStream (Node.js)
         const { createReadStream } = await import('fs');
         const readStream = createReadStream('./example.pdf');
         
