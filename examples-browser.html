@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDRSolutions Cloud Client - Browser Example</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            background: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea {
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #progress {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        #progress.show {
+            display: block;
+        }
+        .progress-state {
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .progress-details {
+            font-size: 14px;
+            color: #666;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            display: none;
+        }
+        #result.show {
+            display: block;
+        }
+        #error {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            color: #721c24;
+            display: none;
+        }
+        #error.show {
+            display: block;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 IDRSolutions Cloud Client</h1>
+        <p>Browser Example - Universal JavaScript API</p>
+        
+        <div class="note">
+            <strong>Note:</strong> This example works directly in the browser! 
+            The same code works in Node.js too.
+        </div>
+
+        <div class="form-group">
+            <label for="endpoint">API Endpoint</label>
+            <input 
+                type="text" 
+                id="endpoint" 
+                placeholder="https://cloud.idrsolutions.com/cloud/buildvu"
+                value="https://cloud.idrsolutions.com/cloud/buildvu"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="token">API Token (for cloud.idrsolutions.com)</label>
+            <input type="password" id="token" placeholder="your-api-token">
+        </div>
+
+        <div class="form-group">
+            <label for="username">Username (for self-hosted servers)</label>
+            <input type="text" id="username" placeholder="your-username">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password (for self-hosted servers)</label>
+            <input type="password" id="password" placeholder="your-password">
+        </div>
+
+        <div class="form-group">
+            <label for="file">Select PDF File</label>
+            <input type="file" id="file" accept=".pdf">
+        </div>
+
+        <div class="form-group">
+            <label for="settings">Conversion Settings (optional JSON)</label>
+            <textarea 
+                id="settings" 
+                placeholder='{"option": "value"}'
+            ></textarea>
+            <small style="color: #666;">Enter converter-specific settings as JSON. Leave empty for defaults.</small>
+        </div>
+
+        <button id="convertBtn">Convert Document</button>
+
+        <div id="progress">
+            <div class="progress-state" id="progressState">Processing...</div>
+            <div class="progress-details" id="progressDetails"></div>
+        </div>
+
+        <div id="result">
+            <strong>✅ Conversion Complete!</strong>
+            <div id="resultDetails"></div>
+        </div>
+
+        <div id="error">
+            <strong>❌ Error:</strong>
+            <div id="errorMessage"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import IDRCloudClient, { INPUT, ConversionError } from './idrcloudclient.js';
+
+        const convertBtn = document.getElementById('convertBtn');
+        const progressDiv = document.getElementById('progress');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('error');
+
+        convertBtn.addEventListener('click', async () => {
+            // Hide previous results
+            progressDiv.classList.remove('show');
+            resultDiv.classList.remove('show');
+            errorDiv.classList.remove('show');
+
+            // Get form values
+            const endpoint = document.getElementById('endpoint').value;
+            const token = document.getElementById('token').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const fileInput = document.getElementById('file');
+            const settingsInput = document.getElementById('settings').value.trim();
+
+            // Validate
+            if (!endpoint) {
+                showError('Please enter an API endpoint');
+                return;
+            }
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                showError('Please select a PDF file');
+                return;
+            }
+
+            // Validate settings JSON if provided
+            let settings = null;
+            if (settingsInput) {
+                try {
+                    JSON.parse(settingsInput); // Validate JSON
+                    settings = settingsInput;
+                } catch (e) {
+                    showError('Invalid JSON in settings field: ' + e.message);
+                    return;
+                }
+            }
+
+            const file = fileInput.files[0];
+
+            // Create client with credentials
+            const credentials = {};
+            if (token) {
+                credentials.token = token;
+            }
+            if (username && password) {
+                credentials.username = username;
+                credentials.password = password;
+            }
+            const client = new IDRCloudClient(endpoint, credentials);
+
+            // Disable button
+            convertBtn.disabled = true;
+            convertBtn.textContent = 'Converting...';
+
+            try {
+                // Show progress
+                progressDiv.classList.add('show');
+
+                // Build conversion parameters
+                const conversionParams = {
+                    input: INPUT.UPLOAD,
+                    file: file  // Browser File object (has .name property)
+                    // For Blob objects without names, add: filename: 'document.pdf'
+                };
+                
+                // Add settings if provided
+                if (settings) {
+                    conversionParams.settings = settings;
+                }
+
+                // Convert with progress callback
+                const result = await client.convert(
+                    conversionParams,
+                    {
+                        onProgress: (progress) => {
+                            // Update progress UI with primary state
+                            document.getElementById('progressState').textContent = 
+                                `State: ${progress.state}`;
+                            
+                            // Show additional fields if present
+                            const otherFields = Object.keys(progress)
+                                .filter(key => key !== 'state')
+                                .map(key => `${key}: ${progress[key]}`)
+                                .join(', ');
+                            
+                            if (otherFields) {
+                                document.getElementById('progressDetails').textContent = 
+                                    `Additional info: ${otherFields}`;
+                            } else {
+                                document.getElementById('progressDetails').textContent = '';
+                            }
+                        }
+                    }
+                );
+
+                // Show result
+                showResult(result);
+
+            } catch (error) {
+                if (error instanceof ConversionError) {
+                    showError(`Conversion failed (${error.statusCode}): ${error.message}`);
+                } else {
+                    showError(error.message);
+                }
+            } finally {
+                // Re-enable button
+                convertBtn.disabled = false;
+                convertBtn.textContent = 'Convert Document';
+                progressDiv.classList.remove('show');
+            }
+        });
+
+        function showResult(result) {
+            resultDiv.classList.add('show');
+            document.getElementById('resultDetails').innerHTML = `
+                <p><strong>Download URL:</strong> <a href="${result.downloadUrl}" target="_blank">${result.downloadUrl}</a></p>
+                <pre>${JSON.stringify(result, null, 2)}</pre>
+            `;
+        }
+
+        function showError(message) {
+            errorDiv.classList.add('show');
+            document.getElementById('errorMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>
